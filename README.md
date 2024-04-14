@@ -1,11 +1,13 @@
 # TunnelVision
 
+TunnelVision is a data leakage vulnerability which allows an attacker to read and modify VPN traffic from a target on the local network.
+
 This appears to work on any operating system that has a DHCP client that implements support for Option 121 rules. Notably, I tested it with success on Windows 10 and Ubuntu Desktop 22.04.03. When I tried it on a virtualized Android9.0 VM, I did not see any issue as Android (to this day as far as I can tell) does not support DHCP Option 121 classless static routes.
 
 ## **Under the following circumstances, a leak occurs:**
 1. An attacker controls the DHCP server for the victim. This could be done by compromising a router on the same local network, an evil twin AP attack, a network administrator providing a configuration that accidentally leaks traffic for a VPN user, or by DHCPDISCOVERY packet racing a true DHCP server on the network. The race condition would only work on DHCP client implementations where it selects the first-lease offer when supplied multiple offers.
 2. The attacker is also acting as the Gateway, so any traffic that is not encrypted by the VPN is readable to the attacker. As a DHCP server you configure the gateways of clients.
-3. A user is using a VPN 
+3. A user is using a VPN.
 4. The user turns off any VPN client configuration setting that sets a host-firewall rule that drops traffic (if one exists) on the victim machine. 
 
 If the option in #4 is turned on, this technique becomes a selective denial-of-service for arbitrary IP and ranges, as an attacker I can control these IP/ranges. This could lead a user to self-debug the problem and disable the setting, which would then leak the traffic.
@@ -16,7 +18,7 @@ If the option in #4 is turned on, this technique becomes a selective denial-of-s
 - The attacker changes the DHCP configuration to push Option 121 classless static routes (RFC3442) to the victim. As an attacker, I can control the IP or ranges I want to leak by adjusting the prefix of the route I push. I.e. a /32 vs /1 prefix.
 - The routing table of the victim adds the route from the DHCP automatically without the user’s consent or knowledge.
 - Because the routing table makes routing decisions based on the prefix length, the highest prefix length match is chosen. I.e. a /32 route has a higher prefix length than a /1 route.
-- If the chosen route, is one pushed by the DHCP server, it is automatically configured to go over a non-VPN interface. Therefore, since routing decisions happen before the traffic can be encrypted, it also is sent over a non-VPN interface to the default gateway without any encryption. Meaning, it does not matter what VPN protocol is in use or the strength of its encryption.
+- If the chosen route is one pushed by the DHCP server, it is automatically configured to go over a non-VPN interface. Therefore, since routing decisions happen before the traffic can be encrypted, it also is sent over a non-VPN interface to the default gateway without any encryption. Meaning, it does not matter what VPN protocol is in use or the strength of its encryption.
 - Because the attacker sets themselves as the default gateway, they can then read that unencrypted traffic before forwarding it.
 - Additionally, because the traffic is also forwarded by the gateway, the VPN tunnel remains connected, and the user would believe they are protected
 
@@ -32,14 +34,14 @@ To help illustrate the above attack path, I am including 3 diagrams I’ve made 
 ![Dataflow no leaks](images/DHCP-route-but-firewall-drops.png)
 
 ## **Steps to reproduce (virtualized lab, also can be configured on hardware with a switch):**
-- Only tested on Windows based host for VirtualBox
-- Download an Ubuntu 22.04.03 Server ISO; this will be our attacker DHCP server
+- Only tested on Windows based host for VirtualBox.
+- Download an Ubuntu 22.04.03 Server ISO; this will be our attacker DHCP server.
 - Use Virtualbox for emulation, create a VM, attach two network interfaces: one in bridged mode and one that is "internal network". Ideally, ensure your bridged network’s DHCP isn’t configured to hand out IPs in the range 192.168.1.0/24 as we will use be using that ourselves.
 - Use the default installation options -- I recommend installing the openssh server so you can move the files there, but this can be accomplished via other means too.
 - Log into the box after installation process.
 - Start ssh service for file transfer:   `sudo systemctl start sshd.service`
 - Find your ip address for the bridged adapter:   `hostname -I`
-- From your host use an SSH client to transfer the files provided to the machine.
+- From your host use an SSH client to transfer the files provided to the machine:   `scp <path to root Git folder>/*.sh <ip address>:`
 - Once the files are on the machine:   `chmod +x configdhcpserver.sh norouteconfig.sh pushrouteconfig.sh startup.sh`
 - If you used WinSCP, such as I did, clean the files of their windows-ness so you can run them as an executable:   `for file in *; do [ -f "$file" ] && sed -i 's/\r$//' "$file"; done`
 - Configure the server, choose default options if prompts come up:   `sudo ./configuredhcpserver.sh`
