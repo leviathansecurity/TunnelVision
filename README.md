@@ -1,19 +1,20 @@
 # TunnelVision: Decloaking Full and Split Tunnel VPNs
 ## CVE-2024-3661 
 
-TunnelVision is a local network VPN leaking technique that allows an attacker to read, drop, and sometimes modify VPN traffic from a target on the local network. This technique does not activate kill-switches and does not have a full fix we are aware of. We are using the built-in and widely supported feature DHCP Option 121 to do this. 
+TunnelVision is a local network VPN leaking technique that allows an attacker to read, drop, and sometimes modify VPN traffic from a targets on the local network. This technique does not activate kill-switches and does not have a full fix we are aware of. We are using the built-in and widely supported feature DHCP Option 121 to do this. 
 
-Option 121 supports installing multiple routes with CIDR ranges. By using multiple /1 routes can be installed which could leak all traffic of a targeted user, or an attacker might choose to leak only certain IP addresses for stealth reasons. We're calling this effect **decloaking**.
+Option 121 supports installing multiple routes with CIDR ranges. By installing multiple /1 routes an attacker can leak all traffic of a targeted user, or an attacker might choose to leak only certain IP addresses for stealth reasons. We're calling this effect **decloaking**.
 
-TunnelVision has theoretically existed since 2002 but has gone publicly unnoticed. For this reason, we are publishing broadly to make the privacy and security industry aware of this capability. In addition, the mitigation we've observed from VPN providers renders a VPN pointless in public settings and challenges VPN providers assurances that a VPN is able to "secure" a user's traffic on untrusted networks.
+TunnelVision has theoretically exploitable since 2002, but has gone publicly unnoticed as far as we can tell. For this reason, we are publishing broadly to make the privacy and security industry aware of this capability. In addition, the mitigation we've observed from VPN providers renders a VPN pointless in public settings and challenges VPN providers assurances that a VPN is able to "secure" a user's traffic on untrusted networks. It remains unclear if a full fix is possible since this is how networking is intended to work.
 
 ## TunnelVision Research Team
 - Researchers:
-	- Lizzie Moratti
-	- Dani Cronce
+	- [Lizzie Moratti](https://www.linkedin.com/in/lmoratti/)
+	- [Dani Cronce](https://www.linkedin.com/in/danicronce/)
 - Supported & Sponsored by: 
-	- Leviathan Security Group
-- Full details can be found at Leviathan Security Group's blogpost {Link here when available}.
+	- [Leviathan Security Group](https://www.leviathansecurity.com/)
+- Video [Proof of Concept](https://www.youtube.com/@LeviathanSecurityGroup) TODO: Link Video here when uploaded.
+- Full details at [TunnelVision blogpost]() TODO: Link here when public.
 
 ## Affected Operating Systems
 TunnelVision appears to work on any operating system that has a DHCP client that implements support for DHCP option 121. Most modern operating systems support this such as Linux, Windows, and MacOS. Notably, Android does not appear to have support for option 121 and remains unaffected.
@@ -32,7 +33,7 @@ An attacker who allows all traffic for a period of time can use traffic analysis
 
 ## **How decloaking works:**
 - We supply a lease that is valid for a short amount of time. For the POC, we use 30 seconds. 
-	- In some cases, windows doesn't like 2-10 second ranges and has mixed results which perhaps someone more familiar with its network stack could work around. 
+	- In some cases, Windows doesn't like 2-10 second ranges and has mixed results. Perhaps someone more familiar with its network stack could work around this but we were unable to. 
 - The attacker changes the DHCP configuration to push Option 121 classless static routes (RFC3442) to the victim.
 	- As an attacker, we can control the IP or ranges we want to leak by adjusting the prefix length of the route we push. I.e. a /32 vs /1 prefix length.
 - The routing table of the victim adds the route from the DHCP automatically.
