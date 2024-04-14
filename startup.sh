@@ -15,7 +15,7 @@ echo "Enabling internal interface..."
 ifconfig $internal_interface up
 
 echo "Configuring IP address..."
-ip addr add 192.168.1.1/24 dev $internal_interface
+ip addr add 10.13.37.1/24 dev $internal_interface
 
 echo "Starting DHCP server..."
 systemctl start isc-dhcp-server
