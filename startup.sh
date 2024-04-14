@@ -14,7 +14,7 @@ echo "Internal Interface: $internal_interface"
 echo "Enabling internal interface..."
 ifconfig $internal_interface up
 
-echo "Configuring IP address..."
+echo "Configuring IP address 10.13.37.1/24 on $internal_interface..."
 ip addr add 10.13.37.1/24 dev $internal_interface
 
 echo "Starting DHCP server..."
