@@ -1,11 +1,11 @@
 # TunnelVision: Decloaking Full and Split Tunnel VPNs
 ## CVE-2024-3661 
 
-TunnelVision is a local network VPN leaking technique that allows an attacker to read, drop, and sometimes modify VPN traffic from a targets on the local network. This technique does not activate kill-switches and does not have a full fix we are aware of. We are using the built-in and widely supported feature DHCP Option 121 to do this. 
+TunnelVision is a local network VPN leaking technique that allows an attacker to read, drop, and sometimes modify VPN traffic from a targets on the local network. This technique does not activate kill-switches and does not have a full fix we are aware of. We are using the built-in and widely supported feature DHCP option 121 to do this. 
 
 Option 121 supports installing multiple routes with CIDR ranges. By installing multiple /1 routes an attacker can leak all traffic of a targeted user, or an attacker might choose to leak only certain IP addresses for stealth reasons. We're calling this effect **decloaking**.
 
-TunnelVision has been theoretically exploitable since 2002, but has gone publicly unnoticed as far as we can tell. For this reason, we are publishing broadly to make the privacy and security industry aware of this capability. In addition, the mitigation we've observed from VPN providers renders a VPN pointless in public settings and challenges VPN providers assurances that a VPN is able to "secure" a user's traffic on untrusted networks. It remains unclear if a full fix is possible since this is how networking is intended to work.
+TunnelVision has been theoretically exploitable since 2002, but has gone publicly unnoticed as far as we can tell. For this reason, we are publishing broadly to make the privacy and security industry aware of this capability. In addition, the mitigation we've observed from VPN providers renders a VPN pointless in public settings and challenges VPN providers' assurances that a VPN is able to "secure" a user's traffic on untrusted networks. It remains unclear if a full fix is possible as this is how networking is intended to work.
 
 ## TunnelVision Research Team
 - Researchers:
@@ -20,29 +20,29 @@ TunnelVision has been theoretically exploitable since 2002, but has gone publicl
 TunnelVision appears to work on any operating system that has a DHCP client that implements support for DHCP option 121. Most modern operating systems support this such as Linux, Windows, and MacOS. Notably, Android does not appear to have support for option 121 and remains unaffected.
 
 ## Affected VPN Protocols
-TunnelVision works regardless of any VPN Protocol (Wireguard, OpenVPN, IPsec), Cipher-suites, or other cryptographic properties. We use DHCP Option 121 to route traffic away from the VPN's interface so no encryption routine may happen. 
+TunnelVision works regardless of any VPN protocol (Wireguard, OpenVPN, IPsec), ciphersuites, or other cryptographic properties. We use DHCP option 121 to route traffic away from the VPN's interface so no VPN encryption routine may happen. 
 
 ## Problems with observed mitigations
-We have observed host-based firewalls that will drop traffic going over the physical interface talking to the DHCP server. The VPN tunnel will always remain intact and since we can control which IPs will be dropped via DHCP 121, this becomes a "selective denial-of-service" instead of decloaking traffic. However, this introduces a side-channel that can be used to deanonymize the destination of the VPN traffic since this mitigation does not activate a kill-switch. In addition, by denying all traffic this can render the VPN entirely useless or tempt a user to self-debug their settings to remove this mitigation.
+We have observed host-based firewalls that will drop traffic going over the physical interface talking to the DHCP server. The VPN tunnel will always remain intact, and since we can control which IPs will be dropped via option 121, this becomes a "selective denial-of-service" instead of decloaking traffic. This introduces a side-channel that can be used to deanonymize the destination of the VPN traffic. In addition, by denying all traffic, this can render the VPN entirely useless or tempt a user to self-debug their settings to remove this mitigation.
 
-An attacker who allows all traffic for a period of time can use traffic analysis to create a baseline for the volume of traffic. They can then push routes that deny traffic for IPs or ranges and compare the volume of traffic against this baseline. Using statistics, it's possible to confirm the targeted user is talking to an IP address that might be considered banned in their geographic location.
+The attacker can allow all traffic for a period of time can use traffic analysis to create a baseline for the volume of traffic. They can then push routes that deny traffic for IPs or ranges and compare the volume of traffic against this baseline. Using statistics, it's possible to confirm whether the targeted user is talking to a particular IP address or space. This is most relevant in places where the government has banned certain services.
 
 ## Requirements to exploit 
 1. An attacker is on the same local network as a targeted user
 2. An attacker is able to control/modify the DHCP lease for the targeted user
 
 ## **How decloaking works:**
-- We supply a lease that is valid for a short amount of time. For the POC, we use 30 seconds. 
+- We supply a lease that is valid for a short amount of time. For this lab, we use 30 seconds.
 	- In some cases, Windows doesn't like 2-10 second ranges and has mixed results. Perhaps someone more familiar with its network stack could work around this but we were unable to. 
-- The attacker changes the DHCP configuration to push Option 121 classless static routes (RFC3442) to the victim.
+- The attacker changes the DHCP configuration to push option 121 classless static routes (RFC3442) to the victim.
 	- As an attacker, we can control the IP or ranges we want to leak by adjusting the prefix length of the route we push. I.e. a /32 vs /1 prefix length.
-- The routing table of the victim adds the route from the DHCP automatically.
+- The routing table of the victim adds the route from DHCP automatically.
 	- The highest prefix length match is chosen. I.e. a /32 route has a higher prefix length than a /1 route.
-	- DHCP routes are *automatically configured to go over a non-VPN interface*.
-	- Routing decisions happen before the traffic can be encrypted (See Appendix Diagrams), so traffic will be unencrypted.
+	- DHCP routes are *automatically configured to go over the same interface as the DHCP server*.
+	- Routing decisions happen before the traffic can be encrypted (see appendix diagrams), so traffic will be unencrypted.
 		- It does not matter what VPN protocol is in use or the strength of its encryption.
-- The attacker has sets themselves as the default gateway, they can then read that unencrypted traffic before forwarding it.
-	- The VPN tunnel remains connected and the displays user they are still connected.
+- The attacker sets themselves as the default gateway, so they can then read that unencrypted traffic before forwarding it.
+	- The VPN tunnel remains connected and reports to the user that they are still connected.
 
 ## **Virtual Machine**
 There is a [virtual machine image]() that will be easier to get up and running.  TODO: add link to image 
@@ -71,7 +71,7 @@ There is a [virtual machine image]() that will be easier to get up and running. 
 6. `hostname -I `
 	- The IP address is needed for the next step where we SSH from our Windows host
 ### Setting up the server
-1. From your windows host open Powershell `ssh administrator@{IP from Install Step 6}`
+1. From your Windows host open Powershell `ssh administrator@{IP from Install Step 6}`
 	- ![powershell ssh example ](instruction_screenshots/powershell_ssh.png)
 2. `git clone https://github.com/leviathansecurity/TunnelVision.git`
 3. `cd TunnelVision`
@@ -111,7 +111,7 @@ There is a [virtual machine image]() that will be easier to get up and running. 
 ## Lab Setup
 ![](images/LabSetup.png)
 ### Rogue admin lab
-After configuring the DHCP server start a new VM that will intend to mimic a VPN user.
+After configuring the DHCP server, start a new VM that to mimic a VPN user.
 1. Choose internal network for its network adapter in the VMs settings. This will mean it will obtain a DHCP lease from the server we control.
 2. Install a VPN on the user machine.
 3. (Optional) Turn off any VPN setting that enables a host-firewall rule to drop traffic to non-VPN interfaces on the victim machine.
@@ -121,15 +121,15 @@ After configuring the DHCP server start a new VM that will intend to mimic a VPN
 6. On the victim machine, show the route table and observe there is a route for 8.8.8.8 that goes over a non-VPN interface: 
 	- Ubuntu command:   `ip route`  
 	- Windows command:  `route print`
-7. Ping 8.8.8.8 from the victim machine
+7. Ping 8.8.8.8 from the victim machine.
 	- `ping 8.8.8.8`
-8. Observe that it will either ping or will be dropped
-9. (Optional) Install Wireshark or tcpdump to the victim hosts and manually confirm the interface the icmp traffic from ping is using.
+8. Observe that it will either ping or will be dropped.
+9. (Optional) Install Wireshark or tcpdump to the victim host and manually confirm the interface the ICMP traffic is using.
 	- If ping is not working, observe it goes over NO interface which is the selective denial-of-service behavior
 	- If ping is working, observe it is NOT going over the VPN tunnel
-10. On the attacker DHCP server, observe you can read the unencrypted traffic:   
+10. On the attacker DHCP server, observe you can read the unencrypted traffic.
 	- `sudo tcpdump -i enp0s8 icmp` 
-		- (enp0s8 should be the interface name you are serving DHCP over)
+	- (enp0s8 should be the interface name you are serving DHCP over)
 ### Adjacent Host lab
 [Coming Soon] We are still working on releasing our tool, however in our POC video you can observe a demo of this lab.
 # Appendix
@@ -137,7 +137,7 @@ After configuring the DHCP server start a new VM that will intend to mimic a VPN
 ![Dataflow no leaks](images/Dataflow-VPN-connected-no-leaks.png)
 
 
-## **Data flow for when an attacker is pushing 121 routes without a host-firewall setting enabled, creating a leak.**  
+## **Data flow for when an attacker is pushing 121 routes without a host firewall setting enabled, creating a leak.**  
 ![Dataflow no leaks](images/Malicious-DHCP-route-successful-leak.png)
 
 ## **Data flow for when an attacker is pushing 121 routes and the creates a selective denial of service instead of a leak due to the host-firewall setting being enabled.**  
