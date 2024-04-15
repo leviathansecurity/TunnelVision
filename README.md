@@ -5,7 +5,7 @@ TunnelVision is a local network VPN leaking technique that allows an attacker to
 
 Option 121 supports installing multiple routes with CIDR ranges. By installing multiple /1 routes an attacker can leak all traffic of a targeted user, or an attacker might choose to leak only certain IP addresses for stealth reasons. We're calling this effect **decloaking**.
 
-TunnelVision has been theoretically exploitable since 2002, but has gone publicly unnoticed as far as we can tell. For this reason, we are publishing broadly to make the privacy and security industry aware of this capability. In addition, the mitigation we've observed from VPN providers renders a VPN pointless in public settings and challenges VPN providers' assurances that a VPN is able to "secure" a user's traffic on untrusted networks. It remains unclear if a full fix is possible as this is how networking is intended to work.
+TunnelVision has been theoretically exploitable since 2002, but has gone publicly unnoticed as far as we can tell. For this reason, we are publishing broadly to make the privacy and security industry aware of this capability. In addition, the mitigation we've observed from VPN providers renders a VPN pointless in public settings and challenges VPN providers' assurances that a VPN is able to secure a user's traffic on untrusted networks. It remains unclear if a full fix is possible as this is how networking is intended to work.
 
 ## TunnelVision Research Team
 - Researchers:
