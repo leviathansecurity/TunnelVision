@@ -111,7 +111,7 @@ There is a [virtual machine image]() that will be easier to get up and running. 
 ## Lab Setup
 ![](images/LabSetup.png)
 ### Rogue admin lab
-After configuring the DHCP server, start a new VM that to mimic a VPN user.
+After configuring the DHCP server, start a new VM to mimic a VPN user.
 1. Choose internal network for its network adapter in the VMs settings. This will mean it will obtain a DHCP lease from the server we control.
 2. Install a VPN on the user machine.
 3. (Optional) Turn off any VPN setting that enables a host-firewall rule to drop traffic to non-VPN interfaces on the victim machine.
