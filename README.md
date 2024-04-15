@@ -142,5 +142,5 @@ After configuring the DHCP server, start a new VM to mimic a VPN user.
 ## **Data flow for when an attacker is pushing 121 routes without a host firewall setting enabled, creating a leak.**  
 ![Dataflow no leaks](images/Malicious-DHCP-route-successful-leak.png)
 
-## **Data flow for when an attacker is pushing 121 routes and the creates a selective denial of service instead of a leak due to the host-firewall setting being enabled.**  
+## **Data flow for when an attacker is pushing 121 routes and the mitigation creates a selective denial of service instead of a leak due to the host-firewall setting being enabled.**  
 ![Dataflow no leaks](images/DHCP-route-but-firewall-drops.png)
