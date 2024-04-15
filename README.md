@@ -13,7 +13,9 @@ TunnelVision has been theoretically exploitable since 2002, but has gone publicl
 	- [Dani Cronce](https://www.linkedin.com/in/danicronce/)
 - Supported & Sponsored by: 
 	- [Leviathan Security Group](https://www.leviathansecurity.com/)
-- Video [Proof of Concept](https://www.youtube.com/@LeviathanSecurityGroup) TODO: Link Video here when uploaded.
+- Video Proof of Concept
+	- [With commentary](https://www.youtube.com/@LeviathanSecurityGroup) TODO: Link Video here when uploaded.
+  	- [Original, no editing](https://www.youtube.com/@LeviathanSecurityGroup) TODO: Link Video here when uploaded.
 - Full details at [TunnelVision blogpost]() TODO: Link here when public.
 
 ## Affected Operating Systems
