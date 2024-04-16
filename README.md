@@ -14,8 +14,8 @@ TunnelVision has been theoretically exploitable since 2002, but has gone publicl
 - Supported & Sponsored by: 
 	- [Leviathan Security Group](https://www.leviathansecurity.com/)
 - Video Proof of Concept
-	- [With commentary](https://www.youtube.com/@LeviathanSecurityGroup) TODO: Link Video here when uploaded.
-  	- [Original, no editing](https://www.youtube.com/@LeviathanSecurityGroup) TODO: Link Video here when uploaded.
+	- [With commentary](https://drive.google.com/file/d/1ksgcJpCcG6q7AVtULVRuLcX5ZjJv7xHc) TODO: Link Video here when uploaded to Leviathan's YouTube channel.
+  	- [Original, no editing](https://drive.google.com/file/d/1JMg5lWSNurBRjzPhcHleQ7YNJQkAHU1o/view?usp=drive_link) TODO: Link Video here when uploaded to Leviathan's YouTube channel.
 - Full details at [TunnelVision blogpost]() TODO: Link here when public.
 
 ## Affected Operating Systems
@@ -47,7 +47,7 @@ The attacker can allow all traffic for a period of time can use traffic analysis
 	- The VPN tunnel remains connected and reports to the user that they are still connected.
 
 ## **Virtual Machine**
-There is a [virtual machine image]() that will be easier to get up and running.  TODO: add link to image 
+There is a [virtual machine image]() that will be easier to get up and running.  TODO: add link to image hosted by Leviathan
 
 **username:** administrator  
 **password:** password
