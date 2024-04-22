@@ -138,6 +138,36 @@ After configuring the DHCP server, start a new VM to mimic a VPN user.
 ## **Data flow for a VPN working normally without malicious DHCP routes**  
 ![Dataflow no leaks](images/Dataflow-VPN-connected-no-leaks.png)
 
+Below are the steps from the diagram in as much detail as we could reasonably provide. We feel it could be useful to a future security researcher or a developer trying to understand the technology, so we are including it for their benefit.
+1.	An application process sends a payload to a socket it creates.
+2.	The socket formats the payload into a packet and sends it to the routing table to determine which interface it should be sent through.
+3.	The routing table determines that the packet should be sent through tun0.
+4.	The routing table sends the packet to the firewall.
+5.	The firewall rules allow the packet to continue to tun0.
+6.	The network interface serializes the packet and writes it into a file descriptor at /dev/net/tun in userland.
+7.	The VPN client process reads the unencrypted raw bytes of the packet in the file descriptor.
+8.	The VPN process creates an encrypted payload and sends it to a socket the VPN made.
+9.	The socket formats the payload into a packet that is bound for the VPN’s server and sends it to the routing table to determine which interface it should be sent through.
+10.	The routing table determines that the packet must be sent over the wlan0 interface.
+11.	The routing table sends the packet to the firewall.
+12.	The firewall rules determine that the outbound packet may continue using wlan0.
+13.	The network interface transfers the packet to its Wi-Fi driver.
+14.	The Wi-Fi driver sends the VPN-bound packet to the physical network interface card (NIC).
+15.	The packet is sent across the internet to the VPN server.
+16.	The VPN server sends a packet in response back to the physical NIC.
+17.	The NIC sends the response packet to the Wi-Fi driver.
+18.	The Wi-Fi driver delivers the response packet to wlan0.
+19.	The response packet is sent to the firewall.
+20.	The firewall rules allow the packet to continue.
+21.	The packet is returned to the VPN socket.
+22.	The socket receives the packet and sends the packet’s encrypted payload to the VPN client process.
+23.	The VPN client process decrypts the payload and writes the unencrypted raw bytes of the response packet to the file descriptor.
+24.	The tun0 interface deserializes the bytes from the file descriptor and formats it into a packet.
+25.	The tun0 interface sends the packet to the firewall.
+26.	The firewall rules allow the packet to continue.
+27.	The packet is returned to the socket opened by the user’s application process.
+28.	The payload from the packet is returned to the application process.
+
 
 ## **Data flow for when an attacker is pushing 121 routes without a host firewall setting enabled, creating a leak.**  
 ![Dataflow no leaks](images/Malicious-DHCP-route-successful-leak.png)
