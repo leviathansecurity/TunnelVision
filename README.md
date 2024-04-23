@@ -1,4 +1,4 @@
-# TunnelVision: Decloaking Full and Split Tunnel VPNs
+# TunnelVision: Decloaking Routing-Based VPNs
 ## CVE-2024-3661 
 
 TunnelVision is a local network VPN leaking technique that allows an attacker to read, drop, and sometimes modify VPN traffic from a targets on the local network. This technique does not activate kill-switches and does not have a full fix for every major operating system. We are using the built-in and widely supported feature DHCP option 121 to do this. 
