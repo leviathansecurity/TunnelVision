@@ -21,7 +21,7 @@ A fix is available on Linux when configuring the VPN users host to utilize netwo
 - Full details at [TunnelVision blogpost]() TODO: Link here when public.
 
 ## Affected Operating Systems
-TunnelVision appears to work on any operating system that has a DHCP client that implements support for DHCP option 121. Most modern operating systems support this such as Linux, Windows, and MacOS. Notably, Android does not appear to have support for option 121 and remains unaffected.
+TunnelVision appears to work on any operating system that has a DHCP client that implements support for DHCP option 121. Most modern operating systems support this such as Linux, Windows, iOS and MacOS. Notably, Android does not appear to have support for option 121 and remains unaffected.
 
 ## Affected VPN Protocols
 TunnelVision works regardless of any VPN protocol (Wireguard, OpenVPN, IPsec), ciphersuites, or other cryptographic properties. We use DHCP option 121 to route traffic away from the VPN's interface so no VPN encryption routine may happen. 
