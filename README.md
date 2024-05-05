@@ -16,7 +16,7 @@ A fix is available on Linux when configuring the VPN users host to utilize netwo
 - Supported & Sponsored by: 
 	- [Leviathan Security Group](https://www.leviathansecurity.com/)
 - Video Proof of Concept
-	- [With commentary]([https://drive.google.com/file/d/1ksgcJpCcG6q7AVtULVRuLcX5ZjJv7xHc](https://www.youtube.com/watch?v=ajsLmZia6UU)) 
+	- [With commentary](https://www.youtube.com/watch?v=ajsLmZia6UU) 
   	- [Original, no editing](https://drive.google.com/file/d/1JMg5lWSNurBRjzPhcHleQ7YNJQkAHU1o/view?usp=drive_link) 
 - Full details at [TunnelVision blogpost](https://www.leviathansecurity.com/blog/tunnelvision)
 
