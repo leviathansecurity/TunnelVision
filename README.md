@@ -16,9 +16,9 @@ A fix is available on Linux when configuring the VPN users host to utilize netwo
 - Supported & Sponsored by: 
 	- [Leviathan Security Group](https://www.leviathansecurity.com/)
 - Video Proof of Concept
-	- [With commentary](https://drive.google.com/file/d/1ksgcJpCcG6q7AVtULVRuLcX5ZjJv7xHc) TODO: Link Video here when uploaded to Leviathan's YouTube channel.
-  	- [Original, no editing](https://drive.google.com/file/d/1JMg5lWSNurBRjzPhcHleQ7YNJQkAHU1o/view?usp=drive_link) TODO: Link Video here when uploaded to Leviathan's YouTube channel.
-- Full details at [TunnelVision blogpost]() TODO: Link here when public.
+	- [With commentary]([https://drive.google.com/file/d/1ksgcJpCcG6q7AVtULVRuLcX5ZjJv7xHc](https://www.youtube.com/watch?v=ajsLmZia6UU)) 
+  	- [Original, no editing](https://drive.google.com/file/d/1JMg5lWSNurBRjzPhcHleQ7YNJQkAHU1o/view?usp=drive_link) 
+- Full details at [TunnelVision blogpost](https://www.leviathansecurity.com/blog/tunnelvision)
 
 ## Affected Operating Systems
 TunnelVision appears to work on any operating system that has a DHCP client that implements support for DHCP option 121. Most modern operating systems support this such as Linux, Windows, iOS and MacOS. Notably, Android does not appear to have support for option 121 and remains unaffected.
@@ -49,7 +49,7 @@ The attacker can allow all traffic for a period of time can use traffic analysis
 	- The VPN tunnel remains connected and reports to the user that they are still connected.
 
 ## **Virtual Machine**
-There is a [virtual machine image]() that will be easier to get up and running.  TODO: add link to image hosted by Leviathan
+There is a [virtual machine image](https://drive.google.com/file/d/1WLJGs3ZUypf6hLh5WL4AJmsKdUOZo5yZ/view?usp=drive_link) that will be easier to get up and running.  
 
 **username:** administrator  
 **password:** password
