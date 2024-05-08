@@ -5,9 +5,21 @@ TunnelVision is a local network VPN leaking technique that allows an attacker to
 
 Option 121 supports installing multiple routes with CIDR ranges. By installing multiple /1 routes an attacker can leak all traffic of a targeted user, or an attacker might choose to leak only certain IP addresses for stealth reasons. We're calling this effect **decloaking**.
 
-TunnelVision has been theoretically exploitable since 2002, but has gone publicly unnoticed as far as we can tell. For this reason, we are publishing broadly to make the privacy and security industry aware of this capability. In addition, the mitigation we've observed from VPN providers renders a VPN pointless in public settings and challenges VPN providers' assurances that a VPN is able to secure a user's traffic on untrusted networks. 
+TunnelVision has been theoretically exploitable since 2002, but has gone ~~publicly unnoticed~~** as far as we can tell. For this reason, we are publishing broadly to make the privacy and security industry aware of this capability. In addition, the mitigation we've observed from VPN providers renders a VPN pointless in public settings and challenges VPN providers' assurances that a VPN is able to secure a user's traffic on untrusted networks. 
 
 A fix is available on Linux when configuring the VPN users host to utilize network namespaces. However, we did not encounter its use outside of our own research. The best documentation we've found about that fix is available [from WireGuard's team.](https://www.wireguard.com/netns/#the-new-namespace-solution) It remains unclear, at the time of publishing, whether this fix or a similar fix is also possible on other operating systems such as [Windows](https://serverfault.com/questions/1001190/windows-equivalent-of-linux-network-namespace) and [MacOS](https://apple.stackexchange.com/questions/429079/does-macos-have-network-namespaces-like-linux) due to neither appearing to have support for network namespaces.
+
+** UPDATE: The purpose of this research was to test this technique against modern VPN providers to determine their vulnerability and to notify the wider public of this issue. This is why we agreed with CISA to file a CVE when we disclosed to them and why we decided to name the vulnerability. 
+ 
+After publication, we have received details about prior research into combining routing table behavior with option 121. These researchers showed that at least some people were aware of DHCP option 121's effect on VPNs going back to at least 2015. Despite this, the research did not lead to wide deployment of mitigations nor the general public awareness of the decloaking behavior.
+ 
+That said, we are grateful for the input of past researchers who explored the problem space. We will continue to credit our fellow security researchers who explored these issues.
+ 
+Prior works referencing DHCP 121 route injection or VPN decloaking:
+- 2015 [Hardening OpenVPN for Def Con](https://www.agwa.name/blog/post/hardening_openvpn_for_def_con])
+- 2016 [Samy Kamkar's PoisonTap](https://github.com/samyk/poisontap)
+- 2017 [Jomo's Mastodon](https://mstdn.io/@jomo/98981403329690455)
+- 2023 [Lowend talk thread](https://lowendtalk.com/discussion/188857/a-rogue-dhcp-server-within-your-network-can-and-will-hijack-your-vpn-traffic)
 
 ## TunnelVision Research Team
 - Researchers:
